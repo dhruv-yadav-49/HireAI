@@ -142,9 +142,8 @@ class LeadService:
                 "assigned_to": str(lead.assigned_to) if lead.assigned_to else None,
             },
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
+        await get_event_publisher().publish(event)
         return lead
 
     async def update_lead(
@@ -278,11 +277,10 @@ class LeadService:
                     "updated_fields": list(updates.keys()),
                 }
             )
-            await get_event_publisher().publish(event)
-
             await self.db.commit()
             # Refresh lead model reference to reflect version and fields
             await self.db.refresh(lead)
+            await get_event_publisher().publish(event)
 
         return lead
 
@@ -309,9 +307,8 @@ class LeadService:
                 "lead_id": str(lead_id),
             }
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
+        await get_event_publisher().publish(event)
 
     # ── Notes Management ───────────────────────────────────────────────────────
 

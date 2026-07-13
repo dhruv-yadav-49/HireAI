@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str = ""
     DATABASE_URL_SYNC: str = ""
 
+    SCHEDULER_POLL_INTERVAL_SECONDS: int = 60
+
     SECRET_KEY: str = "dev_secret_key_placeholder"
     REFRESH_SECRET_KEY: str = "dev_refresh_secret_key_placeholder"
     ALGORITHM: str = "HS256"
