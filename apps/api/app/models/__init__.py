@@ -21,6 +21,17 @@ from app.models.communication_template import CommunicationTemplate
 from app.models.communication_provider import CommunicationProvider
 from app.models.communication import Communication
 from app.models.communication_delivery import CommunicationDelivery
+from app.models.ai_agent import AIProviderConfig, AIAgent
+from app.models.ai_conversation import AIConversation
+from app.models.ai_message import AIMessage, AITokenUsage
+from app.models.ai_prompt import AIPrompt, AIPromptExecution
+from app.models.ai_tool_execution import AIToolExecution
+from app.models.knowledge_document import KnowledgeDocument
+from app.models.knowledge_chunk import KnowledgeChunk
+from app.models.embedding import Embedding
+from app.models.ai_memory import AIMemory
+from app.models.retrieval_log import RetrievalLog
+from app.models.retrieval_feedback import RetrievalFeedback
 
 __all__ = [
     "User",
@@ -53,4 +64,18 @@ __all__ = [
     "CommunicationProvider",
     "Communication",
     "CommunicationDelivery",
+    "AIProviderConfig",
+    "AIAgent",
+    "AIConversation",
+    "AIMessage",
+    "AITokenUsage",
+    "AIPrompt",
+    "AIPromptExecution",
+    "AIToolExecution",
+    "KnowledgeDocument",
+    "KnowledgeChunk",
+    "Embedding",
+    "AIMemory",
+    "RetrievalLog",
+    "RetrievalFeedback",
 ]
