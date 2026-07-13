@@ -334,5 +334,104 @@ class DeliveryEvent(str, Enum):
     REJECTED = "REJECTED"
 
 
+class AIProvider(str, Enum):
+    OPENAI = "OPENAI"
+    ANTHROPIC = "ANTHROPIC"
+    GEMINI = "GEMINI"
+    MOCK = "MOCK"
+
+
+class MessageRole(str, Enum):
+    SYSTEM = "SYSTEM"
+    USER = "USER"
+    ASSISTANT = "ASSISTANT"
+    TOOL = "TOOL"
+
+
+class ConversationStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class ToolExecutionStatus(str, Enum):
+    RUNNING = "RUNNING"
+    SUCCESS = "SUCCESS"
+    FAILED = "FAILED"
+
+
+class AIRuntimeState(str, Enum):
+    IDLE = "IDLE"
+    PROMPT_BUILD = "PROMPT_BUILD"
+    LLM_CALL = "LLM_CALL"
+    WAITING_TOOL = "WAITING_TOOL"
+    TOOL_EXECUTION = "TOOL_EXECUTION"
+    FINAL_RESPONSE = "FINAL_RESPONSE"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class EmbeddingProvider(str, Enum):
+    OPENAI = "OPENAI"
+    GEMINI = "GEMINI"
+    MOCK = "MOCK"
+
+
+class EmbeddingStatus(str, Enum):
+    PENDING = "PENDING"
+    EMBEDDED = "EMBEDDED"
+    FAILED = "FAILED"
+
+
+class KnowledgeDocumentStatus(str, Enum):
+    UPLOADING = "UPLOADING"
+    QUEUED = "QUEUED"
+    PROCESSING = "PROCESSING"
+    READY = "READY"
+    FAILED = "FAILED"
+
+
+class MemoryType(str, Enum):
+    SHORT_TERM = "SHORT_TERM"
+    LONG_TERM = "LONG_TERM"
+    SEMANTIC = "SEMANTIC"
+    FACT = "FACT"
+    PREFERENCE = "PREFERENCE"
+
+
+class ConversationMemoryScope(str, Enum):
+    USER = "USER"
+    LEAD = "LEAD"
+    ORGANIZATION = "ORGANIZATION"
+    GLOBAL = "GLOBAL"
+
+
+class RetrievalSource(str, Enum):
+    VECTOR = "VECTOR"
+    CRM = "CRM"
+    WORKFLOW = "WORKFLOW"
+    DOCUMENT = "DOCUMENT"
+    MEMORY = "MEMORY"
+    HYBRID = "HYBRID"
+
+
+class ChunkStrategy(str, Enum):
+    FIXED = "FIXED"
+    SLIDING = "SLIDING"
+    MARKDOWN = "MARKDOWN"
+    PARAGRAPH = "PARAGRAPH"
+    SEMANTIC = "SEMANTIC"
+
+
+class KnowledgeSourceType(str, Enum):
+    UPLOAD = "UPLOAD"
+    URL = "URL"
+    CRM_EXPORT = "CRM_EXPORT"
+    GOOGLE_DRIVE = "GOOGLE_DRIVE"
+    NOTION = "NOTION"
+    CONFLUENCE = "CONFLUENCE"
+    MANUAL = "MANUAL"
+
+
 
 
