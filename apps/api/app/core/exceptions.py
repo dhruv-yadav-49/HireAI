@@ -102,6 +102,16 @@ class TaskNotFoundException(NotFoundException):
         super().__init__(message)
 
 
+class WorkflowNotFoundException(NotFoundException):
+    def __init__(self, message: str = "Workflow not found."):
+        super().__init__(message)
+
+
+class WorkflowExecutionNotFoundException(NotFoundException):
+    def __init__(self, message: str = "Workflow execution not found."):
+        super().__init__(message)
+
+
 class ConcurrentUpdateException(AppException):
     def __init__(self, message: str = "This record has been updated by another user. Please reload and try again."):
         super().__init__(message, status_code=409)

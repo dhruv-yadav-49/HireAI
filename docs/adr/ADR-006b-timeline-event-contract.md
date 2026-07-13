@@ -1,4 +1,4 @@
-# ADR-007: Universal Timeline Event Contract & Domain Event Publisher
+# ADR-006b: Universal Timeline Event Contract & Domain Event Publisher
 
 **Status**: Accepted  
 **Date**: 2026-07-12  

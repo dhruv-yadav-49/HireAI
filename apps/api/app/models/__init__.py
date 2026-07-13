@@ -14,6 +14,13 @@ from app.models.lead_tag import LeadTag, LeadTagAssignment
 from app.models.lead_activity import LeadActivity
 from app.models.task import Task
 from app.models.task_activity import TaskActivity
+from app.models.workflow import Workflow, WorkflowCondition, WorkflowAction
+from app.models.workflow_execution import WorkflowExecution, WorkflowExecutionStep
+from app.models.scheduled_job import ScheduledJob, JobExecution, Reminder, NotificationQueue
+from app.models.communication_template import CommunicationTemplate
+from app.models.communication_provider import CommunicationProvider
+from app.models.communication import Communication
+from app.models.communication_delivery import CommunicationDelivery
 
 __all__ = [
     "User",
@@ -33,4 +40,17 @@ __all__ = [
     "LeadActivity",
     "Task",
     "TaskActivity",
+    "Workflow",
+    "WorkflowCondition",
+    "WorkflowAction",
+    "WorkflowExecution",
+    "WorkflowExecutionStep",
+    "ScheduledJob",
+    "JobExecution",
+    "Reminder",
+    "NotificationQueue",
+    "CommunicationTemplate",
+    "CommunicationProvider",
+    "Communication",
+    "CommunicationDelivery",
 ]

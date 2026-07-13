@@ -86,9 +86,8 @@ class TaskService:
                 "assigned_to": str(task.assigned_to) if task.assigned_to else None,
             },
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
+        await get_event_publisher().publish(event)
         return task
 
     async def update_task(
@@ -197,6 +196,7 @@ class TaskService:
                 )
 
             # Publish domain events
+            events_to_publish = []
             if "status" in updates:
                 event = DomainEvent(
                     event_name="task.status_changed",
@@ -209,7 +209,7 @@ class TaskService:
                         "new_status": updates["status"].value,
                     }
                 )
-                await get_event_publisher().publish(event)
+                events_to_publish.append(event)
             
             if "assigned_to" in updates:
                 event = DomainEvent(
@@ -223,7 +223,7 @@ class TaskService:
                         "new_assignee_id": str(updates["assigned_to"]) if updates["assigned_to"] else None,
                     }
                 )
-                await get_event_publisher().publish(event)
+                events_to_publish.append(event)
 
             # Generic task update event
             event = DomainEvent(
@@ -236,10 +236,13 @@ class TaskService:
                     "updated_fields": list(updates.keys()),
                 }
             )
-            await get_event_publisher().publish(event)
+            events_to_publish.append(event)
 
             await self.db.commit()
             await self.db.refresh(task)
+
+            for ev in events_to_publish:
+                await get_event_publisher().publish(ev)
 
         return task
 
@@ -295,10 +298,9 @@ class TaskService:
                 "new_status": TaskStatus.COMPLETED.value,
             }
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
         await self.db.refresh(task)
+        await get_event_publisher().publish(event)
         return task
 
     async def reopen_task(self, ctx: RequestContext, task_id: uuid.UUID, version: int) -> Task:
@@ -353,10 +355,9 @@ class TaskService:
                 "new_status": TaskStatus.OPEN.value,
             }
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
         await self.db.refresh(task)
+        await get_event_publisher().publish(event)
         return task
 
     async def cancel_task(self, ctx: RequestContext, task_id: uuid.UUID, version: int) -> Task:
@@ -413,10 +414,9 @@ class TaskService:
                 "new_status": TaskStatus.CANCELLED.value,
             }
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
         await self.db.refresh(task)
+        await get_event_publisher().publish(event)
         return task
 
     async def soft_delete_task(self, ctx: RequestContext, task_id: uuid.UUID) -> None:
@@ -436,9 +436,8 @@ class TaskService:
                 "task_id": str(task_id),
             }
         )
-        await get_event_publisher().publish(event)
-
         await self.db.commit()
+        await get_event_publisher().publish(event)
 
     async def list_activities(self, ctx: RequestContext, task_id: uuid.UUID) -> list[TaskActivity]:
         task = await self.task_repo.get_by_id(ctx, task_id)
