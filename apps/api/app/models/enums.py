@@ -467,3 +467,161 @@ class AIApprovalStatus(str, Enum):
     PENDING = "PENDING"
     APPROVED = "APPROVED"
     REJECTED = "REJECTED"
+
+
+class AgentType(str, Enum):
+    SALES = "SALES"
+    BUSINESS_ANALYST = "BUSINESS_ANALYST"
+    MARKETING = "MARKETING"
+    SUPPORT = "SUPPORT"
+    RECRUITER = "RECRUITER"
+    FINANCE = "FINANCE"
+    HUMAN = "HUMAN"
+
+
+class AgentTaskStatus(str, Enum):
+    CREATED = "CREATED"
+    READY = "READY"
+    RUNNING = "RUNNING"
+    WAITING = "WAITING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+
+
+class MessageType(str, Enum):
+    REQUEST = "REQUEST"
+    RESPONSE = "RESPONSE"
+    EVENT = "EVENT"
+    HANDOFF = "HANDOFF"
+
+
+class SessionStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class BackoffPolicy(str, Enum):
+    FIXED = "FIXED"
+    EXPONENTIAL = "EXPONENTIAL"
+    NONE = "NONE"
+
+
+class CollaborationMode(str, Enum):
+    SEQUENTIAL = "SEQUENTIAL"
+    PARALLEL = "PARALLEL"
+    CONDITIONAL = "CONDITIONAL"
+    FAN_OUT = "FAN_OUT"
+    FAN_IN = "FAN_IN"
+
+
+class BusinessReportType(str, Enum):
+    DAILY = "DAILY"
+    WEEKLY = "WEEKLY"
+    MONTHLY = "MONTHLY"
+    QUARTERLY = "QUARTERLY"
+    CUSTOM = "CUSTOM"
+
+
+class ForecastPeriod(str, Enum):
+    F_7_DAYS = "7_DAYS"
+    F_30_DAYS = "30_DAYS"
+    F_90_DAYS = "90_DAYS"
+    F_180_DAYS = "180_DAYS"
+
+
+class RecommendationPriority(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+class PipelineHealth(str, Enum):
+    HEALTHY = "HEALTHY"
+    WARNING = "WARNING"
+    CRITICAL = "CRITICAL"
+
+
+class RecommendationStatus(str, Enum):
+    PENDING = "PENDING"
+    DELEGATED = "DELEGATED"
+    DISMISSED = "DISMISSED"
+
+
+class TrendDirection(str, Enum):
+    UP = "UP"
+    DOWN = "DOWN"
+    STABLE = "STABLE"
+
+
+class AnomalySeverity(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+class CampaignType(str, Enum):
+    EMAIL = "EMAIL"
+    WHATSAPP = "WHATSAPP"
+    MULTI_CHANNEL = "MULTI_CHANNEL"
+    NEWSLETTER = "NEWSLETTER"
+    REENGAGEMENT = "REENGAGEMENT"
+
+
+class CampaignStatus(str, Enum):
+    DRAFT = "DRAFT"
+    REVIEW = "REVIEW"
+    APPROVED = "APPROVED"
+    SCHEDULED = "SCHEDULED"
+    RUNNING = "RUNNING"
+    PAUSED = "PAUSED"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
+    FAILED = "FAILED"
+
+
+class CampaignGoal(str, Enum):
+    LEAD_GENERATION = "LEAD_GENERATION"
+    LEAD_NURTURING = "LEAD_NURTURING"
+    REENGAGEMENT = "REENGAGEMENT"
+    PRODUCT_LAUNCH = "PRODUCT_LAUNCH"
+    UPSELL = "UPSELL"
+    CROSS_SELL = "CROSS_SELL"
+    WEBINAR = "WEBINAR"
+    EVENT = "EVENT"
+
+
+class AudienceType(str, Enum):
+    ALL_LEADS = "ALL_LEADS"
+    NEW = "NEW"
+    QUALIFIED = "QUALIFIED"
+    CUSTOM = "CUSTOM"
+    INACTIVE = "INACTIVE"
+    HIGH_VALUE = "HIGH_VALUE"
+
+
+class ContentType(str, Enum):
+    EMAIL = "EMAIL"
+    WHATSAPP = "WHATSAPP"
+    SMS = "SMS"
+    SOCIAL = "SOCIAL"
+    LANDING_PAGE = "LANDING_PAGE"
+
+
+class ABTestStatus(str, Enum):
+    DRAFT = "DRAFT"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+
+
+class CampaignPriority(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+
