@@ -35,6 +35,21 @@ from app.models.retrieval_feedback import RetrievalFeedback
 from app.models.ai_plan import AIPlan
 from app.models.ai_action import AIAction
 from app.models.ai_approval import AIApproval
+from app.models.ai_agent_definition import AIAgentDefinition
+from app.models.ai_agent_session import AIAgentSession
+from app.models.ai_agent_task import AIAgentTask
+from app.models.ai_agent_message import AIAgentMessage
+from app.models.ai_agent_workflow import AIAgentWorkflow
+from app.models.ai_kpi_definition import AIKPIDefinition
+from app.models.ai_kpi_snapshot import AIKPISnapshot
+from app.models.ai_forecast import AIForecast
+from app.models.ai_business_report import AIBusinessReport
+from app.models.ai_recommendation import AIRecommendation
+from app.models.ai_campaign import AICampaign
+from app.models.ai_audience_segment import AIAudienceSegment
+from app.models.ai_marketing_content import AIMarketingContent
+from app.models.ai_ab_test import AIABTest
+from app.models.ai_campaign_execution import AICampaignExecution
 
 __all__ = [
     "User",
@@ -84,4 +99,19 @@ __all__ = [
     "AIPlan",
     "AIAction",
     "AIApproval",
+    "AIAgentDefinition",
+    "AIAgentSession",
+    "AIAgentTask",
+    "AIAgentMessage",
+    "AIAgentWorkflow",
+    "AIKPIDefinition",
+    "AIKPISnapshot",
+    "AIForecast",
+    "AIBusinessReport",
+    "AIRecommendation",
+    "AICampaign",
+    "AIAudienceSegment",
+    "AIMarketingContent",
+    "AIABTest",
+    "AICampaignExecution",
 ]
