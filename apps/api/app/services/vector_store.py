@@ -73,13 +73,14 @@ class PgVectorStore(VectorStore):
     ) -> list[dict[str, Any]]:
         # Query utilizing PL/pgSQL public.cosine_similarity
         query = text("""
-            SELECT e.chunk_id, kc.content, kc.metadata_json, public.cosine_similarity(e.vector, :query_vector) AS similarity
+            SELECT e.chunk_id, kc.content, kc.metadata_json, public.cosine_similarity(e.vector, CAST(:query_vector AS REAL[])) AS similarity
             FROM embeddings e
             JOIN knowledge_chunks kc ON kc.id = e.chunk_id
             WHERE e.organization_id = :org_id
             ORDER BY similarity DESC
             LIMIT :limit
         """)
+
         
         result = await db.execute(query, {
             "query_vector": query_vector,

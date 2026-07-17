@@ -127,7 +127,7 @@ hireai/
    npm install
    ```
 3. Start the Next.js development server:
-   ```bash
+ https://github.com/dhruv-yadav-49/HireAI/pull/5/conflict?name=README.md&ancestor_oid=15b9f4128c85fe9c846993f90aedc722cfd6a01f&base_oid=254118c10a576d159e6c54925c75560c27802f86&head_oid=0c3d3c6aae597bcfb8a83c05e25cd008a3655ebb  ```bash
    npm run dev
    ```
    *The frontend application will be running at [http://localhost:3000](http://localhost:3000).*
@@ -140,4 +140,3 @@ To run backend validation tests (e.g. testing the signup, locking, session audit
 ```bash
 # Set Python path to apps/api and run the script
 $env:PYTHONPATH="."; python C:\Users\abhim\.gemini\antigravity-ide\brain\d57a92c8-89d7-4ca0-8466-986e0dcf430b\scratch\test_flows.py
-```

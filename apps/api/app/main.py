@@ -14,6 +14,7 @@ from app.api.v1.scheduler.router import router as scheduler_router
 from app.api.v1.communications.router import router as communications_router
 from app.api.v1.ai.router import router as ai_router
 from app.api.v1.memory.router import router as memory_router
+from app.api.v1.sales_ai.router import router as sales_ai_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -85,6 +86,7 @@ app.include_router(scheduler_router, prefix="/api/v1")
 app.include_router(communications_router, prefix="/api/v1")
 app.include_router(ai_router, prefix="/api/v1")
 app.include_router(memory_router, prefix="/api/v1")
+app.include_router(sales_ai_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["health"])

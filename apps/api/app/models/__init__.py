@@ -32,6 +32,9 @@ from app.models.embedding import Embedding
 from app.models.ai_memory import AIMemory
 from app.models.retrieval_log import RetrievalLog
 from app.models.retrieval_feedback import RetrievalFeedback
+from app.models.ai_plan import AIPlan
+from app.models.ai_action import AIAction
+from app.models.ai_approval import AIApproval
 
 __all__ = [
     "User",
@@ -78,4 +81,7 @@ __all__ = [
     "AIMemory",
     "RetrievalLog",
     "RetrievalFeedback",
+    "AIPlan",
+    "AIAction",
+    "AIApproval",
 ]
