@@ -21,6 +21,7 @@ from app.api.v1.marketing_ai.router import router as marketing_ai_router
 from app.api.v1.observability.router import router as observability_router
 from app.api.v1.evaluation.router import router as evaluation_router
 from app.api.v1.learning.router import router as learning_router
+from app.api.v1.jobs.router import router as jobs_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -99,6 +100,7 @@ app.include_router(marketing_ai_router, prefix="/api/v1")
 app.include_router(observability_router, prefix="/api/v1")
 app.include_router(evaluation_router, prefix="/api/v1")
 app.include_router(learning_router, prefix="/api/v1")
+app.include_router(jobs_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["health"])
