@@ -744,3 +744,50 @@ class LearningTriggerMode(str, Enum):
     MANUAL = "MANUAL"
     SCHEDULED = "SCHEDULED"
     EVENT_DRIVEN = "EVENT_DRIVEN"
+
+
+# ── Sprint 7A: Distributed Execution Platform ───────────────────────────────
+
+class AIJobStatus(str, Enum):
+    QUEUED = "QUEUED"
+    DISPATCHED = "DISPATCHED"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+    RETRYING = "RETRYING"
+    DEAD_LETTER = "DEAD_LETTER"
+
+
+class WorkerStatus(str, Enum):
+    STARTING = "STARTING"
+    IDLE = "IDLE"
+    BUSY = "BUSY"
+    DRAINING = "DRAINING"
+    OFFLINE = "OFFLINE"
+
+
+class QueueType(str, Enum):
+    DEFAULT = "DEFAULT"
+    PRIORITY = "PRIORITY"
+    LONG_RUNNING = "LONG_RUNNING"
+    RETRY = "RETRY"
+    DEAD_LETTER = "DEAD_LETTER"
+    SALES = "SALES"
+    MARKETING = "MARKETING"
+    ANALYTICS = "ANALYTICS"
+
+
+class RetryStrategy(str, Enum):
+    NONE = "NONE"
+    FIXED_DELAY = "FIXED_DELAY"
+    EXPONENTIAL_BACKOFF = "EXPONENTIAL_BACKOFF"
+    JITTER = "JITTER"
+
+
+class JobFailureCategory(str, Enum):
+    LLM_ERROR = "LLM_ERROR"
+    TOOL_ERROR = "TOOL_ERROR"
+    TIMEOUT = "TIMEOUT"
+    VALIDATION = "VALIDATION"
+    SYSTEM = "SYSTEM"

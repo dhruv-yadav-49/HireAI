@@ -68,6 +68,9 @@ from app.models.ai_feedback_session import AIFeedbackSession
 from app.models.ai_improvement import AIImprovement
 from app.models.ai_prompt_suggestion import AIPromptSuggestion
 from app.models.ai_policy_suggestion import AIPolicySuggestion
+from app.models.ai_worker import AIWorker
+from app.models.ai_job import AIJob
+from app.models.ai_job_result import AIJobResult, AIJobEvent
 
 __all__ = [
     "User",
@@ -150,4 +153,8 @@ __all__ = [
     "AIImprovement",
     "AIPromptSuggestion",
     "AIPolicySuggestion",
+    "AIWorker",
+    "AIJob",
+    "AIJobResult",
+    "AIJobEvent",
 ]
