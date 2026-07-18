@@ -5,12 +5,11 @@ from datetime import datetime, timezone
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.enums import AIJobStatus, JobFailureCategory, AgentType, TraceStatus, TraceSamplingMode
+from app.models.enums import AIJobStatus, JobFailureCategory, AgentType, TraceStatus, TraceSamplingMode, EventType
 from app.models.ai_job import AIJob
 from app.repositories.job_repository import QueueRepository
 from app.services.trace_collector import TraceCollector
-from app.services.evaluation_engine import EvaluationEngine
-from app.services.learning_scheduler import LearningScheduler
+from app.events.event_bus import EventBus
 
 logger = logging.getLogger(__name__)
 
@@ -189,14 +188,22 @@ class JobExecutor:
             )
             await db.flush()
 
-            # Run Evaluation Engine (preserves Sprint 6B hooks)
-            evaluation = await EvaluationEngine.evaluate_execution(db, trace.id)
-            await db.flush()
-
-            # Low score forces suggestion optimization engine (preserves Sprint 6C hooks)
-            evaluation.overall_score = 70.0
-            await db.flush()
-            await LearningScheduler.run_scheduler(db, job.organization_id)
+            # Sprint 7B: Publish JOB_COMPLETED — Evaluation and Learning
+            # subscribers now react asynchronously through the event bus,
+            # decoupling the executor from downstream services.
+            bus = EventBus(db)
+            await bus.emit(
+                org_id=job.organization_id,
+                event_type=EventType.JOB_COMPLETED,
+                payload={
+                    "job_id": str(job_id),
+                    "execution_trace_id": str(trace.id),
+                    "status": "SUCCESS",
+                },
+                aggregate_type="AIJob",
+                aggregate_id=job_id,
+                correlation_id=trace.id,
+            )
             await db.flush()
 
             # Save result record

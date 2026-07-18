@@ -71,6 +71,10 @@ from app.models.ai_policy_suggestion import AIPolicySuggestion
 from app.models.ai_worker import AIWorker
 from app.models.ai_job import AIJob
 from app.models.ai_job_result import AIJobResult, AIJobEvent
+from app.models.ai_event import AIEvent
+from app.models.ai_event_subscription import AIEventSubscription
+from app.models.ai_event_delivery import AIEventDelivery
+
 
 __all__ = [
     "User",
@@ -157,4 +161,7 @@ __all__ = [
     "AIJob",
     "AIJobResult",
     "AIJobEvent",
+    "AIEvent",
+    "AIEventSubscription",
+    "AIEventDelivery",
 ]
