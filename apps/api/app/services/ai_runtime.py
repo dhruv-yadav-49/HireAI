@@ -22,6 +22,9 @@ from app.services.tool_registry import ToolRegistry
 from app.services.retrieval_service import RetrievalService
 from app.services.context_builder import ContextBuilder
 from app.services.memory_service import MemoryService
+from app.services.trace_collector import TraceCollector
+from app.services.metric_aggregator import MetricAggregator
+from app.models.enums import TraceStatus, AgentType, TraceSamplingMode
 
 
 class AIRuntime:
@@ -99,6 +102,16 @@ class AIRuntime:
         conversation.runtime_state = AIRuntimeState.PROMPT_BUILD
         await db.flush()
 
+        # ── OBSERVABILITY: Start execution trace (ADR-016 — passive, non-blocking) ──
+        exec_trace = await TraceCollector.start_execution(
+            db=db,
+            org_id=ctx.tenant_id,
+            agent_type=AgentType.SALES,   # default; callers may override via subclass
+            conversation_id=conversation.id,
+            correlation_id=request_id if isinstance(request_id, uuid.UUID) else None,
+            component="AIRuntime"
+        )
+
         # ── RETRIEVAL INDEPENDENCE PIPELINE ──
         # Runtime calls RetrievalService exclusively to fetch context matching the user query
         retrieved_results = await RetrievalService.retrieve(
@@ -146,6 +159,31 @@ class AIRuntime:
             "prompt_type": "SYSTEM"
         }, request_id)
 
+        # ── OBSERVABILITY: Record prompt span ─────────────────────────────────
+        if exec_trace:
+            await TraceCollector.record_prompt(
+                db=db,
+                execution_trace_id=exec_trace.id,
+                step_index=1,
+                system_prompt=agent.system_prompt,
+                compiled_prompt=compiled_prompt_str,
+                prompt_hash=sys_hash
+            )
+
+        # ── OBSERVABILITY: Record retrieval span ──────────────────────────────
+        if exec_trace:
+            await TraceCollector.record_retrieval(
+                db=db,
+                execution_trace_id=exec_trace.id,
+                step_index=2,
+                query=user_message,
+                retrieved_memories_json=[
+                    {"source": r.source.value, "content": r.content[:80]}
+                    for r in retrieved_results if hasattr(r, "source")
+                ],
+                vector_hit_count=len(retrieved_results)
+            )
+
         # 4. Fetch Message index & append User Message to DB
         query_msg_count = await db.execute(
             select(func.count(AIMessage.id)).where(AIMessage.conversation_id == conversation.id)
@@ -174,8 +212,9 @@ class AIRuntime:
             "total_latency_ms": 0
         }
         assistant_msg = await self._run_llm_cycle(
-            db, ctx, conversation, agent, llm_messages, credentials, tool_executions, request_id, metrics
+            db, ctx, conversation, agent, llm_messages, credentials, tool_executions, request_id, metrics, exec_trace
         )
+
 
         # Trigger Memory Extractors to record facts/preferences in background before returning
         try:
@@ -197,6 +236,23 @@ class AIRuntime:
         
         await db.flush()
 
+        # ── OBSERVABILITY: Complete execution trace + record metrics ──────────
+        if exec_trace:
+            await TraceCollector.complete_execution(
+                db=db,
+                trace=exec_trace,
+                status=TraceStatus.SUCCESS,
+                total_latency_ms=metrics["total_latency_ms"],
+                total_tokens=conversation.total_tokens
+            )
+            await MetricAggregator.record_metrics(
+                db=db,
+                trace=exec_trace,
+                tool_latency_ms=sum(
+                    t.duration_ms for t in tool_executions if t.duration_ms
+                ) or None
+            )
+
         return conversation, assistant_msg, tool_executions
 
     @classmethod
@@ -210,7 +266,8 @@ class AIRuntime:
         credentials: dict,
         tool_executions: list[AIToolExecution],
         request_id: Optional[uuid.UUID],
-        metrics: dict
+        metrics: dict,
+        exec_trace=None
     ) -> AIMessage:
         """Invokes provider, validates results, triggers functions, updates execution traces."""
         
@@ -364,6 +421,20 @@ class AIRuntime:
                 tool_executions.append(tool_exec)
                 await db.flush()
 
+                # ── OBSERVABILITY: Record tool span ─────────────────────────
+                if exec_trace:
+                    await TraceCollector.record_tool(
+                        db=db,
+                        execution_trace_id=exec_trace.id,
+                        tool_name=tool_name,
+                        step_index=5 + len(tool_executions),
+                        arguments_json=tool_args,
+                        result_json=tool_exec.output_json,
+                        duration_ms=tool_exec.duration_ms,
+                        status=TraceStatus.SUCCESS if tool_exec.status == ToolExecutionStatus.SUCCESS else TraceStatus.FAILED,
+                        error_message=tool_exec.error_message if tool_exec.status == ToolExecutionStatus.FAILED else None
+                    )
+
                 await self._publish_event(ctx, "ai.tool.completed", conversation.id, {
                     "tool_name": tool_name,
                     "status": tool_exec.status
@@ -390,7 +461,7 @@ class AIRuntime:
 
             # Recursively run the next LLM cycle containing tool responses
             return await self._run_llm_cycle(
-                db, ctx, conversation, agent, llm_messages, credentials, tool_executions, request_id, metrics
+                db, ctx, conversation, agent, llm_messages, credentials, tool_executions, request_id, metrics, exec_trace
             )
 
         # No tool calls: finalize response

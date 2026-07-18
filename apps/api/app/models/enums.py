@@ -617,6 +617,8 @@ class ABTestStatus(str, Enum):
     COMPLETED = "COMPLETED"
 
 
+
+
 class CampaignPriority(str, Enum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
@@ -624,4 +626,37 @@ class CampaignPriority(str, Enum):
     CRITICAL = "CRITICAL"
 
 
+# ── Sprint 6A: AI Observability Platform ──────────────────────────────────────
 
+class TraceStatus(str, Enum):
+    STARTED = "STARTED"
+    SUCCESS = "SUCCESS"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+
+
+class TraceType(str, Enum):
+    EXECUTION = "EXECUTION"
+    PROMPT = "PROMPT"
+    RETRIEVAL = "RETRIEVAL"
+    PLANNING = "PLANNING"
+    REASONING = "REASONING"
+    POLICY = "POLICY"
+    TOOL = "TOOL"
+
+
+class MetricType(str, Enum):
+    LATENCY = "LATENCY"
+    TOKEN = "TOKEN"
+    COST = "COST"
+    MEMORY = "MEMORY"
+    RETRIEVAL = "RETRIEVAL"
+    TOOL = "TOOL"
+    PLANNING = "PLANNING"
+    POLICY = "POLICY"
+
+
+class TraceSamplingMode(str, Enum):
+    FULL = "FULL"        # Record every trace
+    HEAD = "HEAD"        # Record first N per session
+    DISABLED = "DISABLED"  # No tracing

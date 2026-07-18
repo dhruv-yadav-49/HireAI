@@ -50,6 +50,14 @@ from app.models.ai_audience_segment import AIAudienceSegment
 from app.models.ai_marketing_content import AIMarketingContent
 from app.models.ai_ab_test import AIABTest
 from app.models.ai_campaign_execution import AICampaignExecution
+from app.models.ai_execution_trace import AIExecutionTrace
+from app.models.ai_prompt_trace import AIPromptTrace
+from app.models.ai_retrieval_trace import AIRetrievalTrace
+from app.models.ai_reasoning_trace import AIReasoningTrace
+from app.models.ai_planning_trace import AIPlanningTrace
+from app.models.ai_policy_trace import AIPolicyTrace
+from app.models.ai_tool_trace import AIToolTrace
+from app.models.ai_metric import AIMetric
 
 __all__ = [
     "User",
@@ -114,4 +122,12 @@ __all__ = [
     "AIMarketingContent",
     "AIABTest",
     "AICampaignExecution",
+    "AIExecutionTrace",
+    "AIPromptTrace",
+    "AIRetrievalTrace",
+    "AIReasoningTrace",
+    "AIPlanningTrace",
+    "AIPolicyTrace",
+    "AIToolTrace",
+    "AIMetric",
 ]
