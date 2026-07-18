@@ -22,6 +22,7 @@ from app.api.v1.observability.router import router as observability_router
 from app.api.v1.evaluation.router import router as evaluation_router
 from app.api.v1.learning.router import router as learning_router
 from app.api.v1.jobs.router import router as jobs_router
+from app.api.v1.events.router import router as events_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -42,10 +43,93 @@ async def startup_event():
     local_pub.subscribe(workflow_event_subscriber)
     set_event_publisher(local_pub)
 
+    # ── Sprint 7B: Seed Event Bus Subscriptions (idempotent) ─────────────────
+    # Registers all platform subscribers in the database so that the
+    # EventRouter can fan-out new events without manual DB intervention.
+    await _seed_event_subscriptions()
+
     # Start background scheduler polling loop
     from app.services.scheduler_service import SchedulerService
     global scheduler_task
     scheduler_task = asyncio.create_task(SchedulerService.start_polling())
+
+
+async def _seed_event_subscriptions() -> None:
+    """Idempotent startup seeding of event subscriptions (CTO refinement #13).
+
+    Uses EventRepository.upsert_subscription() which is safe to call
+    multiple times across restarts without creating duplicate rows.
+    """
+    import logging
+    from app.db.session import AsyncSessionFactory
+    from app.models.enums import EventType
+    from app.repositories.event_repository import EventRepository
+    from app.events.event_registry import EventRegistry
+    from app.events.subscribers import (
+        observability_subscriber,
+        evaluation_subscriber,
+        learning_subscriber,
+        notification_subscriber,
+        analytics_subscriber,
+    )
+
+    logger = logging.getLogger(__name__)
+
+    # Register handlers in the in-process EventRegistry
+    EventRegistry.register(
+        "observability_subscriber",
+        observability_subscriber,
+        timeout_seconds=30,
+    )
+    EventRegistry.register(
+        "evaluation_subscriber",
+        evaluation_subscriber,
+        timeout_seconds=60,
+    )
+    EventRegistry.register(
+        "learning_subscriber",
+        learning_subscriber,
+        timeout_seconds=120,
+    )
+    EventRegistry.register(
+        "notification_subscriber",
+        notification_subscriber,
+        timeout_seconds=10,
+    )
+    EventRegistry.register(
+        "analytics_subscriber",
+        analytics_subscriber,
+        timeout_seconds=10,
+    )
+
+    # Persist subscriptions to DB so EventRouter can look them up
+    subscriptions_to_seed = [
+        # JOB_COMPLETED fans out to 4 subscribers
+        ("observability_subscriber", EventType.JOB_COMPLETED, 30, 3),
+        ("evaluation_subscriber",    EventType.JOB_COMPLETED, 60, 3),
+        ("notification_subscriber",  EventType.JOB_COMPLETED, 10, 2),
+        ("analytics_subscriber",     EventType.JOB_COMPLETED, 10, 2),
+        # EVALUATION_COMPLETED triggers the learning loop
+        ("learning_subscriber",      EventType.EVALUATION_COMPLETED, 120, 3),
+        # WORKFLOW_COMPLETED and CAMPAIGN_COMPLETED feed analytics
+        ("analytics_subscriber",     EventType.WORKFLOW_COMPLETED, 10, 2),
+        ("analytics_subscriber",     EventType.CAMPAIGN_COMPLETED, 10, 2),
+    ]
+
+    try:
+        async with AsyncSessionFactory() as db:
+            repo = EventRepository(db)
+            for subscriber_name, event_type, timeout_s, retry_limit in subscriptions_to_seed:
+                await repo.upsert_subscription(
+                    subscriber_name=subscriber_name,
+                    event_type=event_type,
+                    timeout_seconds=timeout_s,
+                    retry_limit=retry_limit,
+                )
+            await db.commit()
+        logger.info("Event Bus: seeded %d subscriptions", len(subscriptions_to_seed))
+    except Exception as exc:
+        logger.warning("Event Bus: subscription seeding failed (non-fatal): %s", exc)
 
 
 @app.on_event("shutdown")
@@ -101,6 +185,7 @@ app.include_router(observability_router, prefix="/api/v1")
 app.include_router(evaluation_router, prefix="/api/v1")
 app.include_router(learning_router, prefix="/api/v1")
 app.include_router(jobs_router, prefix="/api/v1")
+app.include_router(events_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["health"])
