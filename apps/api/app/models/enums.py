@@ -660,3 +660,87 @@ class TraceSamplingMode(str, Enum):
     FULL = "FULL"        # Record every trace
     HEAD = "HEAD"        # Record first N per session
     DISABLED = "DISABLED"  # No tracing
+
+
+# ── Sprint 6B: AI Evaluation Framework ────────────────────────────────────────
+
+class EvaluationStatus(str, Enum):
+    PENDING = "PENDING"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class EvaluationMetric(str, Enum):
+    GROUNDING = "GROUNDING"
+    RETRIEVAL = "RETRIEVAL"
+    PLANNING = "PLANNING"
+    REASONING = "REASONING"
+    TOOLS = "TOOLS"
+    POLICY = "POLICY"
+    LATENCY = "LATENCY"
+    COST = "COST"
+    HALLUCINATION = "HALLUCINATION"
+    OVERALL = "OVERALL"
+
+
+class QualityGrade(str, Enum):
+    A = "A"
+    B = "B"
+    C = "C"
+    D = "D"
+    F = "F"
+
+
+class FeedbackType(str, Enum):
+    POSITIVE = "POSITIVE"
+    NEGATIVE = "NEGATIVE"
+    NEUTRAL = "NEUTRAL"
+
+
+class FeedbackCategory(str, Enum):
+    WRONG_ANSWER = "WRONG_ANSWER"
+    TOO_SLOW = "TOO_SLOW"
+    INCORRECT_TOOL = "INCORRECT_TOOL"
+    HALLUCINATION = "HALLUCINATION"
+    OTHER = "OTHER"
+
+
+class QualityRuleAction(str, Enum):
+    WARN = "WARN"
+    FAIL = "FAIL"
+    BLOCK = "BLOCK"
+    NOTIFY = "NOTIFY"
+
+
+# ── Sprint 6C: Human Feedback & Continuous Learning ──────────────────────────
+
+class LearningStatus(str, Enum):
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class ImprovementType(str, Enum):
+    PROMPT = "PROMPT"
+    PLANNER = "PLANNER"
+    RETRIEVAL = "RETRIEVAL"
+    POLICY = "POLICY"
+    TOOL = "TOOL"
+    MEMORY = "MEMORY"
+
+
+class SuggestionStatus(str, Enum):
+    NEW = "NEW"
+    ANALYZED = "ANALYZED"
+    PROPOSED = "PROPOSED"
+    APPROVED = "APPROVED"
+    DEPLOYED = "DEPLOYED"
+    REJECTED = "REJECTED"
+
+
+class LearningTriggerMode(str, Enum):
+    MANUAL = "MANUAL"
+    SCHEDULED = "SCHEDULED"
+    EVENT_DRIVEN = "EVENT_DRIVEN"

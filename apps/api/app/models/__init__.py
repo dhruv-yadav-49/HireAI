@@ -58,6 +58,16 @@ from app.models.ai_planning_trace import AIPlanningTrace
 from app.models.ai_policy_trace import AIPolicyTrace
 from app.models.ai_tool_trace import AIToolTrace
 from app.models.ai_metric import AIMetric
+from app.models.ai_quality_profile import AIQualityProfile
+from app.models.ai_evaluation import AIEvaluation
+from app.models.ai_evaluation_metric import AIEvaluationMetric
+from app.models.ai_feedback import AIFeedback
+from app.models.ai_quality_rule import AIQualityRule
+from app.models.ai_learning_dataset import AILearningDataset
+from app.models.ai_feedback_session import AIFeedbackSession
+from app.models.ai_improvement import AIImprovement
+from app.models.ai_prompt_suggestion import AIPromptSuggestion
+from app.models.ai_policy_suggestion import AIPolicySuggestion
 
 __all__ = [
     "User",
@@ -130,4 +140,14 @@ __all__ = [
     "AIPolicyTrace",
     "AIToolTrace",
     "AIMetric",
+    "AIQualityProfile",
+    "AIEvaluation",
+    "AIEvaluationMetric",
+    "AIFeedback",
+    "AIQualityRule",
+    "AILearningDataset",
+    "AIFeedbackSession",
+    "AIImprovement",
+    "AIPromptSuggestion",
+    "AIPolicySuggestion",
 ]

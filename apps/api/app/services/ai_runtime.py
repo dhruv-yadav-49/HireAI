@@ -252,8 +252,22 @@ class AIRuntime:
                     t.duration_ms for t in tool_executions if t.duration_ms
                 ) or None
             )
+            # ── EVALUATION: Trigger evaluation engine in background (non-blocking)
+            asyncio.create_task(cls._run_background_evaluation(exec_trace.id))
 
         return conversation, assistant_msg, tool_executions
+
+    @classmethod
+    async def _run_background_evaluation(cls, execution_trace_id: uuid.UUID) -> None:
+        """Helper to run evaluation in background with a fresh session (ADR-017)."""
+        try:
+            from app.db.session import AsyncSessionFactory
+            from app.services.evaluation_engine import EvaluationEngine
+            async with AsyncSessionFactory() as db_session:
+                await EvaluationEngine.evaluate_execution(db_session, execution_trace_id)
+                await db_session.commit()
+        except Exception as e:
+            print(f"[AIRuntime] Background evaluation failed: {e}")
 
     @classmethod
     async def _run_llm_cycle(

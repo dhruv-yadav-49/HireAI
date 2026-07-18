@@ -1,0 +1,11 @@
+{
+  "prompt_build_time_ms": 8,
+  "retrieval_latency_ms": 17,
+  "planner_latency_ms": 7,
+  "tool_latency_ms": 7,
+  "evaluation_latency_ms": 97,
+  "learning_latency_ms": 91,
+  "db_query_count_est": 35,
+  "token_usage": 150,
+  "estimated_cost_usd": 0.0045
+}
