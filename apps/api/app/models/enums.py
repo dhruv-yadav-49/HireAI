@@ -822,3 +822,141 @@ class SubscriberStatus(str, Enum):
     PAUSED = "PAUSED"
     DISABLED = "DISABLED"
 
+
+# ── Sprint 7C: Enterprise Security Platform ───────────────────────────────────
+
+class APIKeyStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    EXPIRED = "EXPIRED"
+    REVOKED = "REVOKED"
+
+
+class AuditAction(str, Enum):
+    CREATE = "CREATE"
+    UPDATE = "UPDATE"
+    DELETE = "DELETE"
+    LOGIN = "LOGIN"
+    LOGOUT = "LOGOUT"
+    EXECUTE = "EXECUTE"
+    APPROVE = "APPROVE"
+    REVOKE = "REVOKE"
+    ROTATE = "ROTATE"
+    DENIED = "DENIED"
+
+
+class SecretType(str, Enum):
+    API_KEY = "API_KEY"
+    PASSWORD = "PASSWORD"
+    TOKEN = "TOKEN"
+    CERTIFICATE = "CERTIFICATE"
+
+
+class PIIType(str, Enum):
+    EMAIL = "EMAIL"
+    PHONE = "PHONE"
+    AADHAAR = "AADHAAR"
+    PAN = "PAN"
+    CREDIT_CARD = "CREDIT_CARD"
+
+
+class SecurityPolicyStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    DISABLED = "DISABLED"
+
+
+class AuthMethod(str, Enum):
+    JWT = "JWT"
+    API_KEY = "API_KEY"
+    OAUTH = "OAUTH"
+    OIDC = "OIDC"
+    SAML = "SAML"
+
+
+# ── Sprint 7D: AI Governance Platform ─────────────────────────────────────────
+
+class GovernanceDecisionStatus(str, Enum):
+    """Final decision produced by the Governance Engine."""
+    PERMIT = "PERMIT"
+    BLOCK = "BLOCK"
+    ESCALATE = "ESCALATE"
+    PENDING = "PENDING"          # decision is being computed (async path)
+
+
+class GovernanceApprovalStatus(str, Enum):
+    """Lifecycle status of a human approval request."""
+    PENDING = "PENDING"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    EXPIRED = "EXPIRED"
+    AUTO_APPROVED = "AUTO_APPROVED"
+
+
+class RiskLevel(str, Enum):
+    """Qualitative risk band derived from the numeric risk score."""
+    CRITICAL = "CRITICAL"    # score >= 0.90
+    HIGH = "HIGH"            # score >= 0.70
+    MEDIUM = "MEDIUM"        # score >= 0.50
+    LOW = "LOW"              # score >= 0.30
+    NEGLIGIBLE = "NEGLIGIBLE"  # score < 0.30
+
+
+class PolicyPackType(str, Enum):
+    """Named governance policy pack."""
+    DEFAULT = "DEFAULT"
+    SOC2 = "SOC2"
+    GDPR = "GDPR"
+    HIPAA = "HIPAA"
+    CUSTOM = "CUSTOM"
+
+
+class ComplianceFramework(str, Enum):
+    """External compliance frameworks for reporting."""
+    OWASP_ASVS = "OWASP_ASVS"
+    OWASP_TOP10 = "OWASP_TOP10"
+    SOC2 = "SOC2"
+    ISO_27001 = "ISO_27001"
+    GDPR = "GDPR"
+    HIPAA = "HIPAA"
+
+
+class ViolationSeverity(str, Enum):
+    """Severity of a detected policy violation."""
+    CRITICAL = "CRITICAL"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+    INFO = "INFO"
+
+
+# ── Sprint 7E: AI Playground Platform ─────────────────────────────────────────
+
+class PlaygroundSessionStatus(str, Enum):
+    """Lifecycle status of a playground session (CTO #11)."""
+    ACTIVE = "ACTIVE"
+    IDLE = "IDLE"
+    EXPIRED = "EXPIRED"
+    ARCHIVED = "ARCHIVED"
+
+
+class ExperimentStatus(str, Enum):
+    """Execution status of a playground experiment or matrix run."""
+    DRAFT = "DRAFT"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class ComparisonType(str, Enum):
+    """Type of side-by-side comparison matrix."""
+    PROMPT = "PROMPT"
+    MODEL = "MODEL"
+    RUNTIME = "RUNTIME"
+    GOVERNANCE = "GOVERNANCE"
+
+
+class SandboxIsolationLevel(str, Enum):
+    """Isolation mode for sandbox runtime (CTO #2)."""
+    READ_ONLY = "READ_ONLY"
+    READ_WITH_CACHE = "READ_WITH_CACHE"
+    MOCK_EXTERNALS = "MOCK_EXTERNALS"
+
