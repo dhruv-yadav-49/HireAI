@@ -120,6 +120,25 @@ class LeadRepository:
         await self.db.flush()
         return True
 
+    async def get_by_id_include_deleted(self, ctx: RequestContext, lead_id: uuid.UUID) -> Lead | None:
+        """Retrieves lead by ID including soft-deleted leads."""
+        stmt = select(Lead).where(
+            Lead.id == lead_id,
+            Lead.organization_id == ctx.tenant_id,
+        )
+        res = await self.db.execute(stmt)
+        return res.scalar_one_or_none()
+
+    async def restore(self, ctx: RequestContext, lead_id: uuid.UUID) -> Lead | None:
+        """Restores a soft-deleted lead."""
+        lead = await self.get_by_id_include_deleted(ctx, lead_id)
+        if lead is None or lead.deleted_at is None:
+            return None
+        lead.deleted_at = None
+        self.db.add(lead)
+        await self.db.flush()
+        return lead
+
     async def email_exists(
         self, ctx: RequestContext, email: str, exclude_id: uuid.UUID | None = None
     ) -> bool:

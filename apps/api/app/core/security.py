@@ -3,6 +3,8 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Literal
 
+from app.core.config import settings
+
 import jwt
 
 try:

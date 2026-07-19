@@ -408,12 +408,49 @@ async def list_activities(
 
 @router.post(
     "/{id}/restore",
-    status_code=status.HTTP_501_NOT_IMPLEMENTED,
-    summary="Restore lead (Reserved)",
-    description="Placeholder endpoint for restoring soft-deleted leads in a future Sprint.",
+    response_model=LeadResponse,
+    summary="Restore lead",
+    description="Restores a previously soft-deleted lead.",
 )
-async def restore_lead_placeholder(id: uuid.UUID):
-    return {"detail": "Not implemented. Reserved for future Sprint."}
+async def restore_lead(
+    id: uuid.UUID,
+    ctx: RequestContext = Depends(get_request_context),
+    db: AsyncSession = Depends(get_db),
+) -> LeadResponse:
+    service = LeadService(db)
+    lead = await service.restore_lead(ctx, id)
+    tags = await service.tag_repo.get_tags_for_lead(ctx, lead.id)
+    return LeadResponse(
+        id=lead.id,
+        organization_id=lead.organization_id,
+        lead_number=lead.lead_number,
+        created_by=lead.created_by,
+        updated_by=lead.updated_by,
+        assigned_to=lead.assigned_to,
+        first_name=lead.first_name,
+        last_name=lead.last_name,
+        company_name=lead.company_name,
+        job_title=lead.job_title,
+        email=lead.email,
+        phone=lead.phone,
+        website=lead.website,
+        country=lead.country,
+        city=lead.city,
+        source=lead.source,
+        created_source=lead.created_source,
+        status=lead.status,
+        priority=lead.priority,
+        estimated_value=lead.estimated_value,
+        currency=lead.currency,
+        is_starred=lead.is_starred,
+        version=lead.version,
+        last_contacted_at=lead.last_contacted_at,
+        next_followup_at=lead.next_followup_at,
+        last_activity_at=lead.last_activity_at,
+        created_at=lead.created_at,
+        updated_at=lead.updated_at,
+        tags=[LeadTagResponse.model_validate(t) for t in tags],
+    )
 
 
 @router.post(
