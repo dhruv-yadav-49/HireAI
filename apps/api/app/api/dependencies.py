@@ -127,6 +127,10 @@ async def get_request_context(
     return await build_request_context(request, user, session, db)
 
 
+# Alias for backwards compatibility across routers
+get_current_context = get_request_context
+
+
 # ── Shortcut: verified user only (email must be confirmed) ────────────────────
 
 async def get_verified_user(

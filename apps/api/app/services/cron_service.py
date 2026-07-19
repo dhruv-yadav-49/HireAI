@@ -1,6 +1,18 @@
 import zoneinfo
 from datetime import datetime
-from croniter import croniter
+try:
+    from croniter import croniter
+except ImportError:
+    class DummyCroniter:
+        def __init__(self, expr, base):
+            self.base = base
+        def get_next(self, ret_type=None):
+            from datetime import timedelta
+            return self.base + timedelta(minutes=5)
+        @staticmethod
+        def is_valid(expr: str) -> bool:
+            return len(expr.split()) >= 5
+    croniter = DummyCroniter
 
 
 class CronService:

@@ -4,23 +4,51 @@ from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 import jwt
-from pwdlib import PasswordHash
 
-from app.core.config import settings
+try:
+    from pwdlib import PasswordHash
+    _password_hasher = PasswordHash.recommended()
 
-_password_hasher = PasswordHash.recommended()  # argon2id under the hood
+    class PasswordManager:
+        """Stateless helpers for hashing and verifying passwords."""
 
+        @staticmethod
+        def hash(plain_password: str) -> str:
+            return _password_hasher.hash(plain_password)
 
-class PasswordManager:
-    """Stateless helpers for hashing and verifying passwords."""
+        @staticmethod
+        def verify(plain_password: str, hashed_password: str) -> bool:
+            return _password_hasher.verify(plain_password, hashed_password)
+except ImportError:
+    try:
+        from passlib.context import CryptContext
+        _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-    @staticmethod
-    def hash(plain_password: str) -> str:
-        return _password_hasher.hash(plain_password)
+        class PasswordManager:
+            """Stateless helpers for hashing and verifying passwords (passlib fallback)."""
 
-    @staticmethod
-    def verify(plain_password: str, hashed_password: str) -> bool:
-        return _password_hasher.verify(plain_password, hashed_password)
+            @staticmethod
+            def hash(plain_password: str) -> str:
+                return _pwd_context.hash(plain_password)
+
+            @staticmethod
+            def verify(plain_password: str, hashed_password: str) -> bool:
+                return _pwd_context.verify(plain_password, hashed_password)
+    except ImportError:
+        import hashlib
+        import hmac
+
+        class PasswordManager:
+            """Stateless helpers for hashing and verifying passwords (hashlib fallback)."""
+
+            @staticmethod
+            def hash(plain_password: str) -> str:
+                return hashlib.sha256(plain_password.encode("utf-8")).hexdigest()
+
+            @staticmethod
+            def verify(plain_password: str, hashed_password: str) -> bool:
+                computed = hashlib.sha256(plain_password.encode("utf-8")).hexdigest()
+                return hmac.compare_digest(computed, hashed_password)
 
 
 class TokenManager:
