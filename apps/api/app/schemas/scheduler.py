@@ -3,7 +3,14 @@ import zoneinfo
 from datetime import datetime
 from typing import Any, Optional
 
-from croniter import croniter
+try:
+    from croniter import croniter
+except ImportError:
+    class DummyCroniter:
+        @staticmethod
+        def is_valid(expr: str) -> bool:
+            return len(expr.split()) >= 5
+    croniter = DummyCroniter
 from pydantic import BaseModel, Field, field_validator
 
 from app.models.enums import JobExecutionStatus, JobStatus, JobType

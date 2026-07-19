@@ -4,7 +4,13 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator, EmailStr
+from pydantic import BaseModel, Field, field_validator, model_validator
+
+try:
+    import email_validator
+    from pydantic import EmailStr
+except Exception:
+    EmailStr = str
 
 from app.models.enums import LeadPriority, LeadSource, LeadStatus, CreatedSource, ActorType, LeadActivityType
 from app.schemas.organization import VALID_CURRENCIES

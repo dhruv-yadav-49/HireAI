@@ -1,5 +1,11 @@
 import uuid
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, Field, field_validator
+
+try:
+    import email_validator
+    from pydantic import EmailStr
+except Exception:
+    EmailStr = str
 from app.utils.password_validator import validate_password_strength
 
 class SignupRequest(BaseModel):

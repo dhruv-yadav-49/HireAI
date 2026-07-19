@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
 from app.core.context import RequestContext
-from app.core.dependencies import get_current_context
+from app.api.dependencies import get_current_context
 from app.schemas.business_ai import (
     AIAnalysisRequest,
     AIAnalysisResponse,
