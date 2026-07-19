@@ -310,6 +310,14 @@ class LeadService:
         await self.db.commit()
         await get_event_publisher().publish(event)
 
+    async def restore_lead(self, ctx: RequestContext, lead_id: uuid.UUID) -> Lead:
+        """Restores a soft-deleted lead."""
+        lead = await self.lead_repo.restore(ctx, lead_id)
+        if lead is None:
+            raise LeadNotFoundException()
+        await self.db.commit()
+        return lead
+
     # ── Notes Management ───────────────────────────────────────────────────────
 
     async def create_note(
