@@ -9,6 +9,8 @@ from app.core.context import RequestContext
 from app.db.session import get_db
 from app.models.enums import QueueType
 from app.services.distributed_execution_service import DistributedExecutionService
+from app.governance.action_interceptor import ActionInterceptor
+from app.security.security_service_helper import build_security_ctx_from_request_ctx
 
 router = APIRouter(prefix="/jobs", tags=["Distributed Jobs"])
 
@@ -31,6 +33,14 @@ async def submit_job(
     ctx: RequestContext = Depends(get_current_context)
 ):
     svc = DistributedExecutionService(db)
+    # ActionInterceptor pre-check (Sprint 7D Governance)
+    sec_ctx = build_security_ctx_from_request_ctx(ctx)
+    await ActionInterceptor.check_action(
+        db=db,
+        sec_ctx=sec_ctx,
+        action_type=body.job_type,
+        job_type=body.job_type,
+    )
     try:
         job = await svc.submit_job(
             ctx=ctx,

@@ -74,6 +74,19 @@ from app.models.ai_job_result import AIJobResult, AIJobEvent
 from app.models.ai_event import AIEvent
 from app.models.ai_event_subscription import AIEventSubscription
 from app.models.ai_event_delivery import AIEventDelivery
+from app.models.api_key import APIKey
+from app.models.security_policy import SecurityPolicy
+from app.models.audit_log import AuditLog
+from app.models.pii_incident import PIIIncident
+from app.models.secret_reference import SecretReference
+from app.models.governance_policy import GovernancePolicy
+from app.models.governance_decision import GovernanceDecision
+from app.models.governance_approval import GovernanceApproval
+from app.models.compliance_report import ComplianceReport
+from app.models.policy_violation import PolicyViolation
+from app.models.playground_session import PlaygroundSession
+from app.models.playground_experiment import PlaygroundExperiment
+from app.models.prompt_experiment import PromptExperiment
 
 
 __all__ = [
@@ -164,4 +177,17 @@ __all__ = [
     "AIEvent",
     "AIEventSubscription",
     "AIEventDelivery",
+    "APIKey",
+    "SecurityPolicy",
+    "AuditLog",
+    "PIIIncident",
+    "SecretReference",
+    "GovernancePolicy",
+    "GovernanceDecision",
+    "GovernanceApproval",
+    "ComplianceReport",
+    "PolicyViolation",
+    "PlaygroundSession",
+    "PlaygroundExperiment",
+    "PromptExperiment",
 ]

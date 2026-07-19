@@ -23,6 +23,9 @@ from app.api.v1.evaluation.router import router as evaluation_router
 from app.api.v1.learning.router import router as learning_router
 from app.api.v1.jobs.router import router as jobs_router
 from app.api.v1.events.router import router as events_router
+from app.api.v1.security.router import router as security_router
+from app.api.v1.governance.router import router as governance_router
+from app.api.v1.playground.router import router as playground_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -150,7 +153,33 @@ async def shutdown_event():
 
 @app.middleware("http")
 async def attach_request_id(request: Request, call_next):
+    """Sprint 7C middleware order (CTO refinement #11):
+    RequestID → RateLimiter → Authentication → Authorization →
+    PII Scan → Business Logic → Audit Logger → Response
+    """
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    # ── Rate Limiter (in-process sliding window) ───────────────────────────────
+    # Runs after RequestID is assigned so the key can include it.
+    # Org-based limiting is enforced inside route handlers via SecurityService.
+    # IP-based limiting guards unauthenticated endpoints here.
+    try:
+        from app.security.rate_limiter import get_rate_limiter
+        ip = (
+            request.headers.get("X-Forwarded-For", "").split(",")[0].strip()
+            or (request.client.host if request.client else "unknown")
+        )
+        limiter = get_rate_limiter()
+        result = limiter.check_ip(ip)
+        if not result.allowed:
+            from fastapi.responses import JSONResponse
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Rate limit exceeded. Try again later."},
+                headers={"Retry-After": str(int(result.retry_after_seconds or 60))},
+            )
+    except Exception:
+        pass  # Rate limiter failure is non-fatal
+
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     return response
@@ -186,6 +215,9 @@ app.include_router(evaluation_router, prefix="/api/v1")
 app.include_router(learning_router, prefix="/api/v1")
 app.include_router(jobs_router, prefix="/api/v1")
 app.include_router(events_router, prefix="/api/v1")
+app.include_router(security_router, prefix="/api/v1")
+app.include_router(governance_router, prefix="/api/v1")
+app.include_router(playground_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["health"])
