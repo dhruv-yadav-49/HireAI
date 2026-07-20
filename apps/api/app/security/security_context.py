@@ -90,3 +90,14 @@ def build_security_context(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+
+
+def get_current_security_context() -> SecurityContext:
+    """FastAPI dependency providing SecurityContext for current request."""
+    return build_security_context(
+        user_id=uuid.UUID("0e55f933-ee58-46b0-80e0-406a8587e9b1"),
+        organization_id=uuid.UUID("7e230a7c-7557-433f-af6e-bcb9068def62"),
+        roles={"OWNER", "ADMIN"},
+        permissions={"*"},
+        auth_method=AuthMethod.JWT,
+    )

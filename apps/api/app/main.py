@@ -26,6 +26,11 @@ from app.api.v1.events.router import router as events_router
 from app.api.v1.security.router import router as security_router
 from app.api.v1.governance.router import router as governance_router
 from app.api.v1.playground.router import router as playground_router
+from app.api.v1.marketplace.router import router as marketplace_router
+from app.api.v1.marketplace_experience.router import router as marketplace_experience_router
+from app.api.v1.developer.router import router as developer_router
+from app.api.v1.billing.router import router as billing_router
+from app.api.v1.ops.router import router as ops_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -218,6 +223,11 @@ app.include_router(events_router, prefix="/api/v1")
 app.include_router(security_router, prefix="/api/v1")
 app.include_router(governance_router, prefix="/api/v1")
 app.include_router(playground_router, prefix="/api/v1")
+app.include_router(marketplace_router, prefix="/api/v1")
+app.include_router(marketplace_experience_router, prefix="/api/v1")
+app.include_router(developer_router, prefix="/api/v1")
+app.include_router(billing_router, prefix="/api/v1")
+app.include_router(ops_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["health"])
