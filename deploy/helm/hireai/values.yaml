@@ -1,0 +1,58 @@
+# deploy/helm/hireai/values.yaml
+# Production Helm Chart Configuration for HireAI (CTO #6)
+
+global:
+  environment: production
+  domain: hireai.dev
+
+# Component 1: Gateway Ingress (CTO #6)
+gateway:
+  enabled: true
+  replicas: 3
+  ingress:
+    class: nginx
+    tls: true
+    annotations:
+      kubernetes.io/tls-acme: "true"
+
+# Component 2: Core API Server (CTO #6)
+api:
+  replicas: 5
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+
+# Component 3: Asynchronous AI Worker Pools (CTO #6, #7)
+workers:
+  replicas: 10
+  autoscaling:
+    enabled: true
+    minReplicas: 5
+    maxReplicas: 50
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+    targetQueueLength: 10
+    targetWorkerUtilizationPercentage: 75
+
+# Component 4: Marketplace Service (CTO #6)
+marketplace:
+  replicas: 2
+
+# Component 5: Reliability & Monitoring (CTO #6)
+monitoring:
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+
+# Component 6: Database & Cache (CTO #6)
+postgres:
+  haMode: true
+  replicas: 3
+redis:
+  clusterMode: true
+  replicas: 3

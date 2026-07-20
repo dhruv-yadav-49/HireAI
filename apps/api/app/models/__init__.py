@@ -87,6 +87,14 @@ from app.models.policy_violation import PolicyViolation
 from app.models.playground_session import PlaygroundSession
 from app.models.playground_experiment import PlaygroundExperiment
 from app.models.prompt_experiment import PromptExperiment
+from app.models.marketplace_package import MarketplacePackage
+from app.models.agent_installation import AgentInstallation
+from app.models.agent_compatibility_log import AgentCompatibilityLog
+from app.models.marketplace_review import MarketplaceReview
+from app.models.marketplace_publisher import MarketplacePublisher
+from app.models.agent_package_version import AgentPackageVersion
+from app.models.tenant_subscription import TenantSubscription
+from app.models.usage_meter_log import UsageMeterLog
 
 
 __all__ = [

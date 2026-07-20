@@ -960,3 +960,95 @@ class SandboxIsolationLevel(str, Enum):
     READ_WITH_CACHE = "READ_WITH_CACHE"
     MOCK_EXTERNALS = "MOCK_EXTERNALS"
 
+
+# ── Sprint 8A: Agent Marketplace Platform ─────────────────────────────────────
+
+class AgentLifecycleStatus(str, Enum):
+    """Formal lifecycle state machine for agent packages (CTO #5)."""
+    DRAFT = "DRAFT"
+    SANDBOX_TESTED = "SANDBOX_TESTED"
+    SECURITY_CHECKED = "SECURITY_CHECKED"
+    GOVERNANCE_CHECKED = "GOVERNANCE_CHECKED"
+    PUBLISHED = "PUBLISHED"
+    INSTALLED = "INSTALLED"
+    ENABLED = "ENABLED"
+    DISABLED = "DISABLED"
+    ARCHIVED = "ARCHIVED"
+
+
+class AgentInstallationStatus(str, Enum):
+    """Installation status per organization tenant (CTO #7)."""
+    PENDING = "PENDING"
+    INSTALLED = "INSTALLED"
+    VERIFIED = "VERIFIED"
+    ACTIVE = "ACTIVE"
+    FAILED = "FAILED"
+    UNINSTALLED = "UNINSTALLED"
+
+
+class AgentPackageType(str, Enum):
+    """Classification of marketplace agent packages."""
+    SYSTEM = "SYSTEM"
+    COMMUNITY = "COMMUNITY"
+    ENTERPRISE = "ENTERPRISE"
+    CUSTOM = "CUSTOM"
+
+
+# ── Sprint 8B: Marketplace Experience & Resolver ──────────────────────────────
+
+class ReleaseChannel(str, Enum):
+    """Release channels for version management (CTO #4)."""
+    STABLE = "STABLE"
+    BETA = "BETA"
+    NIGHTLY = "NIGHTLY"
+    DEPRECATED = "DEPRECATED"
+
+
+class PublisherVerificationBadge(str, Enum):
+    """Trust and verification badges for publisher profiles (CTO #7)."""
+    OFFICIAL = "OFFICIAL"
+    VERIFIED_PARTNER = "VERIFIED_PARTNER"
+    COMMUNITY_CONTRIBUTOR = "COMMUNITY_CONTRIBUTOR"
+
+
+class PublishingStage(str, Enum):
+    """Extended publishing workflow stages (CTO #4)."""
+    DRAFT = "DRAFT"
+    VALIDATION = "VALIDATION"
+    REVIEW = "REVIEW"
+    APPROVED = "APPROVED"
+    PUBLISHED = "PUBLISHED"
+    DEPRECATED = "DEPRECATED"
+    ARCHIVED = "ARCHIVED"
+
+
+# ── Sprint 10: Commercial Cloud Operations & Scale ─────────────────────────────
+
+class SubscriptionPlan(str, Enum):
+    """Commercial tier subscription plans (CTO #4)."""
+    FREE = "FREE"
+    PRO = "PRO"
+    ENTERPRISE = "ENTERPRISE"
+
+
+class MeteredMetricType(str, Enum):
+    """Generic usage metering event types (CTO #2)."""
+    AI_TOKEN = "AI_TOKEN"
+    API_CALL = "API_CALL"
+    AGENT_TASK = "AGENT_TASK"
+    LLM_COST = "LLM_COST"
+    WORKFLOW_EXECUTION = "WORKFLOW_EXECUTION"
+    TOOL_INVOCATION = "TOOL_INVOCATION"
+    PLAYGROUND_SESSION = "PLAYGROUND_SESSION"
+    MARKETPLACE_DOWNLOAD = "MARKETPLACE_DOWNLOAD"
+    STORAGE_MB = "STORAGE_MB"
+
+
+class EntitlementFeature(str, Enum):
+    """Entitlement feature gates separated from subscription plans (CTO #4)."""
+    CUSTOM_AGENTS = "CUSTOM_AGENTS"
+    GOVERNANCE_APPROVALS = "GOVERNANCE_APPROVALS"
+    PLAYGROUND_MATRIX = "PLAYGROUND_MATRIX"
+    MARKETPLACE_PUBLISHING = "MARKETPLACE_PUBLISHING"
+    UNLIMITED_TOKENS = "UNLIMITED_TOKENS"
+

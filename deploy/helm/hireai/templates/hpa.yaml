@@ -1,0 +1,45 @@
+# deploy/helm/hireai/templates/hpa.yaml
+# Kubernetes Horizontal Pod Autoscaler for HireAI Worker Pools (CTO #7)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hireai-worker-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hireai-workers
+  minReplicas: 5
+  maxReplicas: 50
+  metrics:
+    # 1. CPU Autoscaling (CTO #7)
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    # 2. Memory Autoscaling (CTO #7)
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    # 3. Asynchronous Queue Length Metric (CTO #7)
+    - type: External
+      external:
+        metric:
+          name: hireai_worker_queue_length
+        target:
+          type: Value
+          averageValue: "10"
+    # 4. Request Rate Metric (CTO #7)
+    - type: External
+      external:
+        metric:
+          name: hireai_http_requests_per_second
+        target:
+          type: Value
+          averageValue: "500"
