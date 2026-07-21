@@ -1,6 +1,15 @@
 import uuid
 import asyncio
+import sys
+from pathlib import Path
+
+# Automatically ensure sdk/python is in sys.path
+_SDK_PATH = str(Path(__file__).resolve().parent.parent / "sdk" / "python")
+if _SDK_PATH not in sys.path:
+    sys.path.insert(0, _SDK_PATH)
+
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.core.config import settings
@@ -36,6 +45,14 @@ app = FastAPI(
     title=settings.APP_NAME,
     description="HireAI Production API — Multi-tenant SaaS backend",
     version="0.1.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

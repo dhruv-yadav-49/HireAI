@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireAI SaaS Dashboard — AI Employee Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">⚡</div>
+                <div class="brand-text">HireAI <span>v1.1</span></div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" onclick="switchTab('dashboard')">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="#sales-ai" class="nav-item" onclick="switchTab('sales-ai')">
+                    <span class="icon">⭐</span> Sales AI Executive
+                </a>
+                <a href="#crm" class="nav-item" onclick="switchTab('crm')">
+                    <span class="icon">📇</span> CRM Leads
+                </a>
+                <a href="#approvals" class="nav-item" onclick="switchTab('approvals')">
+                    <span class="icon">📬</span> Approvals <span class="badge" id="nav-approval-badge">3</span>
+                </a>
+                <a href="#marketplace" class="nav-item" onclick="switchTab('marketplace')">
+                    <span class="icon">🛒</span> Marketplace
+                </a>
+                <a href="#analytics" class="nav-item" onclick="switchTab('analytics')">
+                    <span class="icon">📈</span> Analytics
+                </a>
+                <a href="#billing" class="nav-item" onclick="switchTab('billing')">
+                    <span class="icon">⚙️</span> Billing & Plan
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">AY</div>
+                    <div class="user-info">
+                        <div class="user-name">Abhiman Yadav</div>
+                        <div class="user-role">Enterprise Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="page-title" id="page-title">Executive Dashboard</div>
+                <div class="topbar-actions">
+                    <span class="status-indicator"><span class="dot"></span> Platform v1.0 Healthy</span>
+                    <button class="btn btn-primary" onclick="switchTab('sales-ai')">+ Run Sales AI</button>
+                </div>
+            </header>
+
+            <!-- TAB 1: EXECUTIVE DASHBOARD -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Active AI Employees</span>
+                            <span class="stat-icon">🤖</span>
+                        </div>
+                        <div class="stat-value">7 Ready</div>
+                        <div class="stat-sub text-success">↑ Sales, Marketing, BI, Support, Finance, Recruiter, Human</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Qualified Leads Today</span>
+                            <span class="stat-icon">🎯</span>
+                        </div>
+                        <div class="stat-value" id="dash-qualified-leads">18</div>
+                        <div class="stat-sub text-success">↑ 24% conversion rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Outreach Emails Sent</span>
+                            <span class="stat-icon">📨</span>
+                        </div>
+                        <div class="stat-value" id="dash-emails-sent">42</div>
+                        <div class="stat-sub">Automated sequences</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Pending Approvals</span>
+                            <span class="stat-icon">⏳</span>
+                        </div>
+                        <div class="stat-value text-warning" id="dash-pending-approvals">3</div>
+                        <div class="stat-sub">High-budget leads (> $10k)</div>
+                    </div>
+                </div>
+
+                <div class="section-container card">
+                    <h3>Hero Product: AI Sales Executive Status</h3>
+                    <p>Autonomous 9-stage pipeline executing Lead Qualification, AI Scoring, Governance Risk Evaluation, and Outreach Email Generation.</p>
+                    <div class="hero-banner">
+                        <div class="hero-info">
+                            <h4>🚀 Ready to qualify leads automatically?</h4>
+                            <p>Enter a lead's company info and watch Sales AI evaluate budget, industry, and risk in real time.</p>
+                        </div>
+                        <button class="btn btn-accent" onclick="switchTab('sales-ai')">Launch Sales Workspace ➔</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: SALES AI HERO WORKSPACE (3-COLUMN LAYOUT) -->
+            <section id="tab-sales-ai" class="tab-content">
+                <div class="workspace-grid">
+                    <!-- Column 1: Lead Entry -->
+                    <div class="card workspace-col">
+                        <h3>1. Lead Entry</h3>
+                        <p class="subtitle">Submit new CRM lead for AI analysis</p>
+                        <form id="lead-form" onsubmit="event.preventDefault(); runSalesAI();">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" id="lead-fn" value="Sarah" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="lead-ln" value="Connor" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="lead-email" value="sarah@cyberdyne.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" id="lead-company" value="Cyberdyne Systems" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Estimated Budget ($)</label>
+                                <input type="number" id="lead-budget" value="25000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Industry</label>
+                                <select id="lead-industry">
+                                    <option value="Enterprise SaaS" selected>Enterprise SaaS</option>
+                                    <option value="Fintech">Fintech</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="E-Commerce">E-Commerce</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" id="btn-run-ai">
+                                ⚡ Run AI Sales Executive
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Column 2: Explainable Audit Reasoning Drawer -->
+                    <div class="card workspace-col">
+                        <h3>2. Explainable Audit Drawer</h3>
+                        <p class="subtitle">Real-time AI qualification breakdown</p>
+                        <div id="audit-placeholder" class="placeholder-box">
+                            <span class="icon-lg">🔍</span>
+                            <p>Submit a lead on the left to inspect AI scoring & risk reasoning.</p>
+                        </div>
+                        <div id="audit-results" class="audit-box hidden">
+                            <div class="score-badge-box">
+                                <div class="score-number" id="audit-score">92</div>
+                                <div class="score-label">Lead Qualification Score</div>
+                            </div>
+                            <div class="audit-list">
+                                <div class="audit-row">
+                                    <span class="audit-key">Decision</span>
+                                    <span class="audit-val badge badge-success" id="audit-decision">QUALIFIED</span>
+                                </div>
+                                <div class="audit-row">
+                                    <span class="audit-key">Confidence</span>
+                                    <span class="audit-val" id="audit-confidence">96%</span>
+                                </div>
+                                <div class="audit-row">
+                                    <span class="audit-key">Budget Tier</span>
+                                    <span class="audit-val" id="audit-budget-tier">$25,000</span>
+                                </div>
+                                <div class="audit-row">
+                                    <span class="audit-key">Risk Level</span>
+                                    <span class="audit-val badge badge-warning" id="audit-risk">MEDIUM</span>
+                                </div>
+                                <div class="audit-row">
+                                    <span class="audit-key">Action Required</span>
+                                    <span class="audit-val highlight" id="audit-action">Approval Required</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 16px;">
+                                <button class="btn btn-success btn-block" id="col2-approve-btn" onclick="handleApproval('approve')">✓ Approve & Send Outreach Email</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Generated Email & Approval Action -->
+                    <div class="card workspace-col">
+                        <h3>3. Generated Email & Actions</h3>
+                        <p class="subtitle">AI personalized outreach sequence</p>
+                        <div id="email-placeholder" class="placeholder-box hidden">
+                            <span class="icon-lg">✉️</span>
+                            <p>Email outreach draft will appear here after AI execution.</p>
+                        </div>
+                        <div id="email-results" class="email-box">
+                            <div class="form-group">
+                                <label>Subject Line</label>
+                                <input type="text" id="email-subject" value="Transforming Cyberdyne Systems's Workflow with HireAI" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Outreach Email Body</label>
+                                <textarea id="email-body" rows="4" readonly>Hi Sarah,
+
+Thanks for connecting! HireAI Sales Executive can streamline your sales qualification.</textarea>
+                            </div>
+                            <div class="approval-action-bar" id="approval-bar">
+                                <button class="btn btn-success" onclick="handleApproval('approve')">✓ Approve & Send Outreach</button>
+                                <button class="btn btn-danger" onclick="handleApproval('reject')">✗ Reject Outreach</button>
+                            </div>
+                            <div id="execution-status-msg" class="status-msg hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: CRM LEADS -->
+            <section id="tab-crm" class="tab-content">
+                <div class="card">
+                    <h3>CRM Lead Management</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Lead Name</th>
+                                <th>Company</th>
+                                <th>Budget</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th>Assigned AI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sarah Connor</td>
+                                <td>Cyberdyne Systems</td>
+                                <td>$25,000</td>
+                                <td><span class="badge badge-success">92/100</span></td>
+                                <td><span class="badge badge-primary">QUALIFIED</span></td>
+                                <td>Sales AI Executive</td>
+                            </tr>
+                            <tr>
+                                <td>Wayne Enterprises</td>
+                                <td>Bruce Wayne</td>
+                                <td>$150,000</td>
+                                <td><span class="badge badge-success">98/100</span></td>
+                                <td><span class="badge badge-warning">PENDING_APPROVAL</span></td>
+                                <td>Sales AI Executive</td>
+                            </tr>
+                            <tr>
+                                <td>Stark Industries</td>
+                                <td>Tony Stark</td>
+                                <td>$500,000</td>
+                                <td><span class="badge badge-success">99/100</span></td>
+                                <td><span class="badge badge-primary">QUALIFIED</span></td>
+                                <td>Sales AI Executive</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 4: APPROVALS -->
+            <section id="tab-approvals" class="tab-content">
+                <div class="card">
+                    <h3>Governance Human Approval Queue</h3>
+                    <p>High-budget lead outreach tasks (> $10,000) requiring Human-in-the-Loop authorization (7D Governance Policy).</p>
+                    <div class="approval-card">
+                        <div class="approval-header">
+                            <div>
+                                <h4>Cyberdyne Systems (Sarah Connor)</h4>
+                                <p>Outreach Email Outreach — Budget $25,000</p>
+                            </div>
+                            <span class="badge badge-warning">PENDING APPROVAL</span>
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn btn-success" onclick="alert('Approval granted! Outreach sent.')">Approve</button>
+                            <button class="btn btn-danger" onclick="alert('Approval rejected. CRM updated.')">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: MARKETPLACE -->
+            <section id="tab-marketplace" class="tab-content">
+                <div class="card">
+                    <h3>Agent Marketplace (v1.0 Ecosystem)</h3>
+                    <p>Discover, evaluate, and install verified AI Employee packages.</p>
+                    <div class="grid-3">
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <span class="agent-icon">💼</span>
+                                <div>
+                                    <div class="agent-title">Sales AI Executive</div>
+                                    <div class="agent-version">v1.1.0 • Official</div>
+                                </div>
+                            </div>
+                            <p>Automated lead qualification, scoring, and consultative email outreach.</p>
+                            <button class="btn btn-secondary" disabled>Installed</button>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <span class="agent-icon">📣</span>
+                                <div>
+                                    <div class="agent-title">Marketing AI Agent</div>
+                                    <div class="agent-version">v1.0.0 • Official</div>
+                                </div>
+                            </div>
+                            <p>Multi-channel email campaign, ad copy, and blog generation.</p>
+                            <button class="btn btn-secondary" disabled>Installed</button>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <span class="agent-icon">📊</span>
+                                <div>
+                                    <div class="agent-title">Business Analyst AI</div>
+                                    <div class="agent-version">v1.0.0 • Official</div>
+                                </div>
+                            </div>
+                            <p>Sales pipeline analytics, conversion funnel bottlenecks, and BI reports.</p>
+                            <button class="btn btn-secondary" disabled>Installed</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: ANALYTICS -->
+            <section id="tab-analytics" class="tab-content">
+                <div class="card">
+                    <h3>Real-Time Platform Reliability & Analytics</h3>
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <div class="stat-title">Uptime SLA</div>
+                            <div class="stat-value text-success">99.98%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">p95 API Latency</div>
+                            <div class="stat-value">145 ms</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Queue Delay</div>
+                            <div class="stat-value">0.45 s</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Event Bus Lag</div>
+                            <div class="stat-value">42 ms</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: BILLING -->
+            <section id="tab-billing" class="tab-content">
+                <div class="card">
+                    <h3>Commercial Subscription & Metering</h3>
+                    <div class="billing-box">
+                        <div class="plan-badge">Current Plan: <span class="badge badge-primary">PRO TIER</span></div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" style="width: 18.4%;"></div>
+                        </div>
+                        <p>184,500 / 1,000,000 monthly AI tokens consumed (18.4%)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 8: SETTINGS -->
+            <section id="tab-settings" class="tab-content">
+                <div class="card">
+                    <h3>Platform Settings</h3>
+                    <p>Architecture Freeze v7.0 • Environment: Production SaaS</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
