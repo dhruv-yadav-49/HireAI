@@ -8,6 +8,14 @@ from typing import Any, Dict, List
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import sys
+from pathlib import Path
+
+# Automatically ensure sdk/python is in sys.path
+_SDK_PATH = str(Path(__file__).resolve().parents[4] / "sdk" / "python")
+if _SDK_PATH not in sys.path:
+    sys.path.insert(0, _SDK_PATH)
+
 from app.db.session import get_db
 from app.security.security_context import SecurityContext, get_current_security_context
 from hireai.doc_generator import AgentDocGenerator
