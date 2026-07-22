@@ -1,6 +1,6 @@
 # HireAI - AI Employee Platform
 
-HireAI is an autonomous, multi-tenant AI Employee Platform designed to automate CRM interactions, manage leads, schedule tasks, run custom automated workflows, and orchestrate stateful AI Sales agents.
+HireAI is an autonomous, multi-tenant AI Employee Platform designed to automate CRM interactions, manage leads, schedule tasks, run custom automated workflows, and orchestrate stateful AI Sales agents...
 
 ---
 
